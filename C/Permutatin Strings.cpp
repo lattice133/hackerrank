@@ -5,7 +5,7 @@
 int sort_string(int n, int pos, char **s) // position is included
 {
     int i;
-    int k = 0;
+    int k = 1;
     int flag = 1;
     char *temp;
     while(flag){
@@ -31,6 +31,15 @@ int find_string(int n, int pos, char **s) //find the string to replace pos
     int target = pos;
     for(i=pos+1; i<=n-1; i++)
     {
+        if(strcmp(s[i],s[pos])>0) 
+        {
+            temp = s[i];
+            target = i;
+        }
+    }
+    if(target == pos) return pos;
+    for(i=pos+1; i<=n-1; i++)
+    {
         if ((strcmp(s[i],temp)<0)&&(strcmp(s[i],s[pos])>0))
         {
             temp = s[i];
@@ -42,11 +51,11 @@ int find_string(int n, int pos, char **s) //find the string to replace pos
 
 int next_permutation(int n, char **s)
 {
-	/**
-	* Complete this method
-	* Return 0 when there is no next permutation and 1 otherwise
-	* Modify array s to its next permutation
-	*/
+    /**
+    * Complete this method
+    * Return 0 when there is no next permutation and 1 otherwise
+    * Modify array s to its next permutation
+    */
     int result = 0;
     int target,i;
     char *temp;
@@ -59,22 +68,23 @@ int next_permutation(int n, char **s)
             s[i] = s[target];
             s[target] = temp;
             sort_string(n,i+1,s);
-            result = 1;
+            return 1;
 
         }
     }
     return result;
 }
 
+
 int main()
 {
 	char **s;
 	int n;
 	scanf("%d", &n);
-	s = (char **)calloc(n, sizeof(char*));
+	s = calloc(n, sizeof(char*));
 	for (int i = 0; i < n; i++)
 	{
-		s[i] = (char *)calloc(11, sizeof(char));
+		s[i] = calloc(11, sizeof(char));
 		scanf("%s", s[i]);
 	}
 	do

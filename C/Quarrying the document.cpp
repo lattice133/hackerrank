@@ -17,28 +17,59 @@ char*** kth_paragraph(char**** document, int k) {
     return document[k-1];
 }
 
-char** string_split(char* text, char* seperation){
+char** string_split(char* text, char seperation){
     assert(text);
-    char* token = (char *)malloc(sizeof(char));
-    token = strtok(text,seperation);
+
+    char* token = strtok(text,&seperation);
     char** Result = (char **)malloc(sizeof(char*));
 
-    int Istext_finished = 1;
+
     int indicator_token = 0;
     
 
     while(token!= NULL){
         Result = (char **)realloc(Result,(indicator_token+1)*sizeof(char*));
         Result[indicator_token] = token;
-        free(token);
-        token= strtok(NULL,seperation);
+        token= strtok(NULL,&seperation);
         indicator_token++;        
     }
+
+    Result = (char **)realloc(Result,(indicator_token+1)*sizeof(char*));
+    Result[indicator_token] = NULL;
 
     return Result;
 }
 
 char**** get_document(char* text) {
+	assert(text != NULL);
+	text = strcat(text,"\n");
+	char ** paragraphs = string_split(text, '\n');
+	int npar = 0;
+	while (paragraphs[npar] != NULL){
+		npar++;
+	}
+	
+	char ****doc = (char ****) malloc((npar + 1)*sizeof(char ***));
+	doc[npar] = NULL;
+	
+	int i = 0;
+	while (paragraphs[i] != NULL){
+		char ** sentences = string_split(paragraphs[i], '.');
+		int nsen = 0;
+		while( sentences[nsen] != NULL){
+			nsen++;
+		}
+		doc[i] = (char ***) malloc((nsen +1)* sizeof(char **));
+		doc[i][nsen] = NULL;
+		
+		int j = 0;
+		while (sentences[j] != NULL){
+			doc[i][j] = string_split(sentences[j], ' ');
+			j++;
+		}
+		i++;
+	}
+	return doc;
 
 }
 
