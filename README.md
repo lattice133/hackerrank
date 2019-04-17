@@ -1,2 +1,0 @@
-# hackerrank
-practices in hackerrank
